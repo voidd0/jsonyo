@@ -1,0 +1,68 @@
+{
+  "name": "@v0idd0/jsonyo",
+  "version": "2.0.0",
+  "description": "JSON swiss army knife — 18 commands, zero limits. Validate, format, query, diff, merge, flatten, convert (YAML/TOML/CSV/XML), generate TypeScript/Go/Python types, batch & watch. Free forever from vøiddo.",
+  "main": "src/index.js",
+  "bin": {
+    "jsonyo": "./bin/jsonyo.js"
+  },
+  "scripts": {
+    "test": "node test.js",
+    "start": "node bin/jsonyo.js"
+  },
+  "keywords": [
+    "json",
+    "json-cli",
+    "jsonpath",
+    "json-schema",
+    "json-diff",
+    "json-merge",
+    "json-query",
+    "json-validate",
+    "json-format",
+    "json-minify",
+    "json-flatten",
+    "json-unflatten",
+    "json-convert",
+    "json-to-yaml",
+    "json-to-toml",
+    "json-to-csv",
+    "json-to-xml",
+    "json-to-typescript",
+    "json-to-go",
+    "json-to-python",
+    "json-types",
+    "jq-alternative",
+    "yaml",
+    "toml",
+    "csv",
+    "xml",
+    "typescript",
+    "developer-tools",
+    "cli",
+    "free",
+    "voiddo"
+  ],
+  "author": "vøiddo <support@voiddo.com> (https://voiddo.com)",
+  "license": "MIT",
+  "homepage": "https://voiddo.com/tools/jsonyo/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voidd0/jsonyo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/voidd0/jsonyo/issues",
+    "email": "support@voiddo.com"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "chokidar": "^3.5.3",
+    "glob": "^10.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
