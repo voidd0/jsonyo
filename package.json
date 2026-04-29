@@ -1,6 +1,6 @@
 {
   "name": "@v0idd0/jsonyo",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "JSON swiss army knife — 18 commands, zero limits. Validate, format, query, diff, merge, flatten, convert (YAML/TOML/CSV/XML), generate TypeScript/Go/Python types, batch & watch. Free forever from vøiddo.",
   "main": "src/index.js",
   "bin": {
@@ -64,5 +64,20 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "LICENSE",
+    "README.md"
+  ],
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "funding": {
+    "type": "individual",
+    "url": "https://voiddo.com/contact/"
   }
 }
