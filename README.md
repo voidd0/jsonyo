@@ -8,7 +8,7 @@
 [![license](https://img.shields.io/npm/l/@v0idd0/jsonyo?color=%2322c55e)](./LICENSE)
 [![node](https://img.shields.io/node/v/@v0idd0/jsonyo?color=%2322c55e)](./package.json)
 
-**[Homepage](https://voiddo.com/tools/jsonyo/)** · **[GitHub](https://github.com/voidd0/jsonyo)** · **[npm](https://www.npmjs.com/package/@v0idd0/jsonyo)** · **[All tools](https://voiddo.com/tools/)** · **[Contact](mailto:support@voiddo.com)**
+**[Homepage](https://tools.voiddo.com/jsonyo/?ref=jsonyo-readme)** · **[GitHub](https://github.com/voidd0/jsonyo)** · **[npm](https://www.npmjs.com/package/@v0idd0/jsonyo)** · **[All tools](https://tools.voiddo.com/?ref=jsonyo-catalog-readme)** · **[Contact](mailto:support@voiddo.com)**
 
 ---
 
@@ -133,7 +133,7 @@ We write them because _we_ need them, and leaving them free means we don't have 
 - **[@v0idd0/envguard](https://www.npmjs.com/package/@v0idd0/envguard)** — stop shipping `.env` drift to staging
 - **[@v0idd0/depcheck](https://www.npmjs.com/package/@v0idd0/depcheck)** — find unused dependencies
 - **[@v0idd0/gitstats](https://www.npmjs.com/package/@v0idd0/gitstats)** — git repo analytics, one command
-- **[View all tools →](https://voiddo.com/tools/)**
+- **[View all tools →](https://tools.voiddo.com/?ref=jsonyo-catalog-readme)**
 
 ## Contributing
 
