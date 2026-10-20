@@ -1,7 +1,7 @@
 {
   "name": "@v0idd0/jsonyo",
-  "version": "2.0.3",
-  "description": "JSON swiss army knife — 18 commands, zero limits. Validate, format, query, diff, merge, flatten, convert (YAML/TOML/CSV/XML), generate TypeScript/Go/Python types, batch & watch. Free forever from vøiddo.",
+  "version": "2.0.4",
+  "description": "JSON command line tool with 18 commands: validate, format, query, diff, merge, flatten, convert (YAML, TOML, CSV, XML), generate types, batch and watch.",
   "main": "src/index.js",
   "bin": {
     "jsonyo": "./bin/jsonyo.js"
@@ -12,40 +12,21 @@
   },
   "keywords": [
     "json",
-    "json-cli",
+    "cli",
     "jsonpath",
     "json-schema",
     "json-diff",
     "json-merge",
-    "json-query",
-    "json-validate",
     "json-format",
-    "json-minify",
-    "json-flatten",
-    "json-unflatten",
-    "json-convert",
+    "json-validate",
     "json-to-yaml",
-    "json-to-toml",
-    "json-to-csv",
-    "json-to-xml",
     "json-to-typescript",
-    "json-to-go",
-    "json-to-python",
-    "json-types",
-    "jq-alternative",
-    "yaml",
-    "toml",
-    "csv",
-    "xml",
-    "typescript",
-    "developer-tools",
-    "cli",
-    "free",
-    "voiddo"
+    "jq",
+    "developer-tools"
   ],
   "author": "vøiddo <support@voiddo.com> (https://voiddo.com)",
   "license": "MIT",
-  "homepage": "https://tools.voiddo.com/jsonyo/?ref=jsonyo-npm",
+  "homepage": "https://tools.voiddo.com/jsonyo/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/voidd0/jsonyo.git"
@@ -65,19 +46,14 @@
   "publishConfig": {
     "access": "public"
   },
+  "funding": {
+    "type": "individual",
+    "url": "https://voiddo.com/contact/"
+  },
   "files": [
     "bin",
     "src",
     "README.md",
     "LICENSE"
-  ],
-  "os": [
-    "darwin",
-    "linux",
-    "win32"
-  ],
-  "funding": {
-    "type": "individual",
-    "url": "https://voiddo.com/contact/"
-  }
+  ]
 }

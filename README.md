@@ -1,8 +1,6 @@
 # jsonyo
 
-> **JSON swiss army knife. Eighteen commands. Zero limits. Free forever.**
-> A gift to the terminal from [**vøiddo**](https://voiddo.com).
-
+> **JSON swiss army knife. Eighteen commands. Zero limits.**
 [![npm](https://img.shields.io/npm/v/@v0idd0/jsonyo?color=%2322c55e&label=%40v0idd0%2Fjsonyo)](https://www.npmjs.com/package/@v0idd0/jsonyo)
 [![downloads](https://img.shields.io/npm/dm/@v0idd0/jsonyo?color=%2322c55e)](https://www.npmjs.com/package/@v0idd0/jsonyo)
 [![license](https://img.shields.io/npm/l/@v0idd0/jsonyo?color=%2322c55e)](./LICENSE)
@@ -47,14 +45,14 @@ Requires Node.js **≥ 14**.
 | `query` · `q` | Extract values by JSONPath (filters, recursion, wildcards) |
 | `keys` · `k` | List every key at any depth |
 | `type` · `t` | Show inferred type and structural summary |
-| `diff` · `d` | Compare two files — text diff or RFC 6902 patch |
+| `diff` · `d` | Compare two files: text diff or RFC 6902 patch |
 | `stats` · `s` | Cardinality + shape statistics |
 | `merge` | Merge unlimited files (last-wins, deep, or custom conflict strategy) |
 | `flatten` | Flatten nested JSON with a custom separator |
-| `unflatten` | Reverse it — rebuild nesting from dotted keys |
+| `unflatten` | Reverse it: rebuild nesting from dotted keys |
 | `sort` | Sort keys or arrays by one or many fields |
 | `filter` | Filter array elements with expressive predicates |
-| `convert` | JSON ↔ YAML, TOML, CSV, XML — both directions |
+| `convert` | JSON ↔ YAML, TOML, CSV, XML: both directions |
 | `schema` | Generate a JSON Schema from data, or validate against one |
 | `generate` | Generate **TypeScript**, **Go**, **Python**, or **Rust** types from a sample |
 | `batch` | Process **thousands of files** at once with glob patterns |
@@ -79,7 +77,7 @@ jsonyo query users.json -p "$.users[?(@.age > 18)].email"
 # diff as patch
 jsonyo diff old.json new.json --format patch
 
-# merge — unlimited files, deep strategy
+# merge: unlimited files, deep strategy
 jsonyo merge a.json b.json c.json d.json --strategy deep -o combined.json
 
 # flatten with custom separator
@@ -98,10 +96,10 @@ jsonyo convert data.json --to csv -o data.csv
 # generate TypeScript types
 jsonyo generate types response.json -o types.ts
 
-# batch — glob across thousands of files
+# batch: glob across thousands of files
 jsonyo batch format "./data/**/*.json" --sort-keys
 
-# watch — auto-validate on save
+# watch: auto-validate on save
 jsonyo watch validate "./src/**/*.json"
 ```
 
@@ -117,23 +115,9 @@ aws ec2 describe-instances | jsonyo filter --where "State.Name == 'running'"
 
 ## Big files, big pipelines
 
-- **No 10 MB cap** — if your laptop can hold it, jsonyo can chew it.
-- **No op-per-day limit** — loop it, cron it, bake it into CI.
-- **No network calls** — jsonyo is a local CLI. Your JSON never leaves your machine.
-
-## Why free forever
-
-We are [**vøiddo**](https://voiddo.com) — a studio building small, sharp tools and a few serious products ([scrb](https://scrb.voiddo.com), [rankd](https://rankd.voiddo.com), [gridlock](https://gl.voiddo.com), and more). The serious products pay for themselves. The tools are gifts.
-
-We write them because _we_ need them, and leaving them free means we don't have to build a billing flow for a terminal utility.
-
-## From the same studio
-
-- **[@v0idd0/tokcount](https://www.npmjs.com/package/@v0idd0/tokcount)** — count LLM tokens before you pay for them
-- **[@v0idd0/envguard](https://www.npmjs.com/package/@v0idd0/envguard)** — stop shipping `.env` drift to staging
-- **[@v0idd0/depcheck](https://www.npmjs.com/package/@v0idd0/depcheck)** — find unused dependencies
-- **[@v0idd0/gitstats](https://www.npmjs.com/package/@v0idd0/gitstats)** — git repo analytics, one command
-- **[View all tools →](https://tools.voiddo.com/?ref=jsonyo-catalog-readme)**
+- **No 10 MB cap**: if your laptop can hold it, jsonyo can chew it.
+- **No op-per-day limit**: loop it, cron it, bake it into CI.
+- **No network calls**: jsonyo is a local CLI. Your JSON never leaves your machine.
 
 ## Contributing
 
@@ -141,8 +125,8 @@ Bugs, feature ideas, PRs welcome. Open an issue at [github.com/voidd0/jsonyo/iss
 
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+MIT: see [LICENSE](./LICENSE).
 
 ---
 
-Built by [vøiddo](https://voiddo.com/) — a small studio shipping AI-flavoured products, free dev tools, Chrome extensions and weird browser games.
+Maintained by v0idd0.
