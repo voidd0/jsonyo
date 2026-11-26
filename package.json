@@ -4,7 +4,7 @@
   "description": "JSON command line tool with 18 commands: validate, format, query, diff, merge, flatten, convert (YAML, TOML, CSV, XML), generate types, batch and watch.",
   "main": "src/index.js",
   "bin": {
-    "jsonyo": "./bin/jsonyo.js"
+    "jsonyo": "bin/jsonyo.js"
   },
   "scripts": {
     "test": "node test.js",
