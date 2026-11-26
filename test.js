@@ -1,5 +1,4 @@
 // jsonyo - comprehensive test suite
-// https://voiddo.com/tools/jsonyo/
 
 const fs = require('fs');
 const path = require('path');
@@ -24,7 +23,7 @@ const { generateSchema, validateAgainstSchema } = require('./src/core/validator'
 const { toYAML, fromYAML, toTOML, fromTOML, toCSV, fromCSV, toXML, fromXML } = require('./src/core/converter');
 const { generateTypeScript, generateGo, generatePython } = require('./src/core/generator');
 
-console.log('running tests... bruh.\n');
+console.log('running tests\n');
 
 let passed = 0;
 let failed = 0;
@@ -243,6 +242,12 @@ test('filterArray: simple condition', () => {
   const data = [{ age: 15 }, { age: 25 }, { age: 35 }];
   const result = filterArray(data, 'age > 20');
   assertEqual(result, [{ age: 25 }, { age: 35 }]);
+});
+
+test('filterArray: && and ||', () => {
+  const data = [{ age: 15, ok: true }, { age: 25, ok: false }, { age: 35, ok: true }];
+  assertEqual(filterArray(data, 'age > 20 && ok'), [{ age: 35, ok: true }]);
+  assertEqual(filterArray(data, 'age < 20 || age > 30').length, 2);
 });
 
 test('filterArray: equality', () => {
@@ -545,6 +550,6 @@ if (failed > 0) {
   console.log(`\x1b[31m${failed} tests failed\x1b[0m`);
   process.exit(1);
 } else {
-  console.log('\x1b[32mall tests passed. bruh.\x1b[0m');
+  console.log('\x1b[32mall tests passed\x1b[0m');
   process.exit(0);
 }

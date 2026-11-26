@@ -1,7 +1,8 @@
 // jsonyo - colored output utilities
-// https://voiddo.com/tools/jsonyo/
 
 const chalk = require('chalk');
+
+if (process.env.NO_COLOR) chalk.level = 0;
 
 const colors = {
   success: chalk.green,
@@ -11,7 +12,6 @@ const colors = {
   muted: chalk.gray,
   accent: chalk.magenta,
   highlight: chalk.bold.white,
-  pro: chalk.hex('#FFD700'),
   brand: chalk.hex('#00D4FF'),
 };
 

@@ -1,5 +1,4 @@
 // jsonyo - JSON transformations
-// https://voiddo.com/tools/jsonyo/
 
 // Flatten nested JSON into dot notation
 function flatten(obj, prefix = '', separator = '.') {
@@ -203,7 +202,9 @@ function setNestedValue(obj, path, value) {
 
 // Filter array by condition
 function filterArray(arr, condition) {
-  return arr.filter(item => evaluateCondition(item, condition));
+  // "||" binds looser than "&&", no parentheses
+  const groups = condition.split('||').map(g => g.split('&&').map(c => c.trim()));
+  return arr.filter(item => groups.some(all => all.every(c => evaluateCondition(item, c))));
 }
 
 // Simple condition evaluator

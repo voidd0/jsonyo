@@ -1,5 +1,4 @@
 // jsonyo - JSON parsing with better errors
-// https://voiddo.com/tools/jsonyo/
 
 function parse(input) {
   try {

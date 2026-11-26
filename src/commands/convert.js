@@ -1,12 +1,10 @@
 // jsonyo - convert command
-// https://voiddo.com/tools/jsonyo/
 
 const fs = require('fs');
 const path = require('path');
 const { parse, stringify } = require('../core/parser');
 const { toYAML, fromYAML, toTOML, fromTOML, toCSV, fromCSV, toXML, fromXML } = require('../core/converter');
 const { colors, success } = require('../utils/output');
-const { checkInputSize, requirePro } = require('../license/limits');
 
 const FORMATS = ['json', 'yaml', 'yml', 'toml', 'csv', 'xml'];
 
@@ -18,17 +16,6 @@ function detectFormat(filePath) {
 
 function run(input, options = {}) {
   const { to, output = null, from = null, inputFile = null } = options;
-
-  // Legacy PRO gate retained as no-op (stubs always pass).
-  if (!requirePro('convert')) {
-    process.exit(1);
-  }
-
-  // Check input size
-  const sizeCheck = checkInputSize(input);
-  if (!sizeCheck.allowed) {
-    process.exit(1);
-  }
 
   // Detect input format
   let sourceFormat = from;
@@ -74,7 +61,7 @@ function run(input, options = {}) {
   }
 
   if (!targetFormat) {
-    console.log(colors.error('bruh. need --to format or -o output.ext'));
+    console.log(colors.error('need --to format or -o output.ext'));
     process.exit(1);
   }
 

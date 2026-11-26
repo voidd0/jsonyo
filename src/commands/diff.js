@@ -1,29 +1,12 @@
 // jsonyo - diff command
-// https://voiddo.com/tools/jsonyo/
 
 const fs = require('fs');
 const { parse, stringify } = require('../core/parser');
 const { computeDiff, diffToPatch } = require('../core/transformer');
 const { colors, success } = require('../utils/output');
-const { checkFileSize } = require('../license/limits');
-const { isPro } = require('../license/checker');
 
 function run(file1, file2, options = {}) {
   const { format = 'text', ignore = null, visual = false } = options;
-
-  // Check file sizes
-  const size1 = checkFileSize(file1);
-  if (!size1.allowed) process.exit(1);
-
-  const size2 = checkFileSize(file2);
-  if (!size2.allowed) process.exit(1);
-
-  // Legacy PRO gate retained as no-op (stubs always pass).
-  if ((format === 'patch' || ignore || visual) && !isPro()) {
-    const { showUpsell, UPSELL_TYPES } = require('../utils/upsell');
-    showUpsell(UPSELL_TYPES.PRO_FEATURE, { feature: 'diff' });
-    process.exit(1);
-  }
 
   const input1 = fs.readFileSync(file1, 'utf8');
   const input2 = fs.readFileSync(file2, 'utf8');
@@ -52,7 +35,7 @@ function run(file1, file2, options = {}) {
   }
 
   if (differences.length === 0) {
-    success('no differences. nice.');
+    success('no differences.');
     return;
   }
 

@@ -1,5 +1,4 @@
 // jsonyo - JSONPath query implementation
-// https://voiddo.com/tools/jsonyo/
 
 const { getNestedValue } = require('./transformer');
 
@@ -44,7 +43,7 @@ function queryWildcard(obj, path) {
   return traverse(obj, 0);
 }
 
-// Advanced JSONPath query with filters (PRO version)
+// Advanced JSONPath query with filters
 function queryAdvanced(obj, path) {
   // Handle recursive descent ..
   if (path.includes('..')) {

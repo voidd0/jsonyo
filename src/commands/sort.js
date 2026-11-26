@@ -1,27 +1,11 @@
 // jsonyo - sort command
-// https://voiddo.com/tools/jsonyo/
 
 const { parse, stringify } = require('../core/parser');
 const { sortKeys, sortArray, getNestedValue, setNestedValue } = require('../core/transformer');
 const { colors } = require('../utils/output');
-const { checkInputSize } = require('../license/limits');
-const { isPro } = require('../license/checker');
 
 function run(input, options = {}) {
   const { path = null, by = null, desc = false, numeric = false } = options;
-
-  // Check input size
-  const sizeCheck = checkInputSize(input);
-  if (!sizeCheck.allowed) {
-    process.exit(1);
-  }
-
-  // Legacy PRO gate retained as no-op (stubs always pass).
-  if (by && by.includes(',') && !isPro()) {
-    const { showUpsell, UPSELL_TYPES } = require('../utils/upsell');
-    showUpsell(UPSELL_TYPES.PRO_FEATURE, { feature: 'sort' });
-    process.exit(1);
-  }
 
   const result = parse(input);
 

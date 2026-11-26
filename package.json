@@ -1,6 +1,6 @@
 {
   "name": "@v0idd0/jsonyo",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "JSON command line tool with 18 commands: validate, format, query, diff, merge, flatten, convert (YAML, TOML, CSV, XML), generate types, batch and watch.",
   "main": "src/index.js",
   "bin": {
@@ -26,17 +26,16 @@
   ],
   "author": "vøiddo <support@voiddo.com> (https://voiddo.com)",
   "license": "MIT",
-  "homepage": "https://tools.voiddo.com/jsonyo/",
+  "homepage": "https://voiddo.com/packages/#jsonyo",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/voidd0/jsonyo.git"
   },
   "bugs": {
-    "url": "https://github.com/voidd0/jsonyo/issues",
-    "email": "support@voiddo.com"
+    "url": "https://github.com/voidd0/jsonyo/issues"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18"
   },
   "dependencies": {
     "chalk": "^4.1.2",
@@ -45,10 +44,6 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "funding": {
-    "type": "individual",
-    "url": "https://voiddo.com/contact/"
   },
   "files": [
     "bin",

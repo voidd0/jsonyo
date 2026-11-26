@@ -1,19 +1,12 @@
 // jsonyo - watch command
-// https://voiddo.com/tools/jsonyo/
 
 const fs = require('fs');
 const path = require('path');
 const { parse, stringify, minify } = require('../core/parser');
 const { validateAgainstSchema } = require('../core/validator');
 const { colors, success } = require('../utils/output');
-const { requirePro, checkFileSize } = require('../license/limits');
 
 function run(command, pattern, options = {}) {
-  // Legacy PRO gate retained as no-op (stubs always pass).
-  if (!requirePro('watch')) {
-    process.exit(1);
-  }
-
   const { schema = null, output: outputDir = null } = options;
 
   console.log(colors.info(`watching: ${pattern}`));
@@ -33,12 +26,6 @@ function run(command, pattern, options = {}) {
   // Process a single file
   function processFile(file) {
     try {
-      const sizeCheck = checkFileSize(file);
-      if (!sizeCheck.allowed) {
-        console.log(colors.warning(`⚠ ${file} - file too large`));
-        return;
-      }
-
       const input = fs.readFileSync(file, 'utf8');
       const result = parse(input);
 

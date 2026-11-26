@@ -1,8 +1,5 @@
 #!/usr/bin/env node
 
-// jsonyo — JSON swiss army knife. Eighteen commands, zero limits, free forever.
-// From vøiddo — https://voiddo.com/tools/jsonyo/
-
 const fs = require('fs');
 
 // Commands
@@ -31,7 +28,7 @@ const args = process.argv.slice(2);
 
 function printHelp() {
   console.log(`
-  ${colors.brand('jsonyo')} — JSON swiss army knife. Free forever from vøiddo.
+  ${colors.brand('jsonyo')}: JSON command line tool with 18 commands.
 
   ${colors.highlight('Usage:')}
     jsonyo <command> [options] [file]
@@ -46,7 +43,7 @@ function printHelp() {
     type, t         Show type and structural summary
     diff, d         Compare two JSON files (text or RFC 6902 patch)
     stats, s        Shape + cardinality statistics
-    merge           Merge unlimited JSON files (last-wins / deep / custom)
+    merge           Merge two or more JSON files (overwrite or concat-arrays)
     flatten         Flatten nested JSON with custom separators
     unflatten       Unflatten dotted keys back to nested
     sort            Sort keys or arrays by one or many fields
@@ -54,7 +51,7 @@ function printHelp() {
     convert         JSON ↔ YAML / TOML / CSV / XML
     schema          Validate against JSON Schema, or generate one
     generate        Generate TypeScript / Go / Python / Rust types
-    batch           Process thousands of files at once (glob-aware)
+    batch           Run a command on many files at once (glob pattern, up to 1000 files)
     watch           Watch files and auto-process on change
 
   ${colors.highlight('Options:')}
@@ -63,8 +60,21 @@ function printHelp() {
     --depth         Depth for keys (default: 1)
     --by            Field to sort by (comma-separated for multi-key)
     --where         Filter predicate
-    --to            Target format for convert
+    --to            Target format for convert (json, yaml, toml, csv, xml); csv for query
+    --from          Source format for convert (default: from file extension, else json)
     --schema        Schema file for validation
+    --tabs          Indent format output with tabs
+    --sort-keys     Sort object keys (format)
+    --key-order     Comma-separated key order for format
+    --trailing-commas  Add trailing commas in format output
+    --select        Fields to keep in filter (comma-separated)
+    --desc          Sort descending
+    --numeric       Sort values as numbers
+    --strategy      Merge strategy: overwrite (default) or concat-arrays
+    --format        Diff output: text (default), json or patch
+    --ignore        Diff paths to ignore (comma-separated)
+    --root-name     Root type name for generate and schema
+    --separator     Separator for flatten and unflatten (default: .)
     -o, --output    Output file
     -h, --help      Show this help
     --version       Show version
@@ -72,27 +82,23 @@ function printHelp() {
   ${colors.highlight('Examples:')}
     jsonyo validate data.json
     jsonyo format data.json -i 4
-    jsonyo query data.json -p "$.users[?(@.age > 18)].email"
+    jsonyo query data.json -p "$.users[?(@.age > 18)]"
     jsonyo diff old.json new.json --format patch
     jsonyo merge a.json b.json c.json -o combined.json
     jsonyo flatten nested.json --separator /
     jsonyo sort data.json --by "country,name"
-    jsonyo filter data.json --where "age > 18 && active"
+    jsonyo filter data.json -p users --where "age > 18 && active"
     jsonyo convert data.json --to yaml
     jsonyo generate types data.json -o types.ts
-    jsonyo batch format "./data/**/*.json" --sort-keys
+    jsonyo batch format "./data/**/*.json"
 
-  ${colors.muted('Docs:      https://voiddo.com/tools/jsonyo/')}
-  ${colors.muted('Issues:    https://github.com/voidd0/jsonyo/issues')}
-  ${colors.muted('Contact:   support@voiddo.com')}
-
-  ${colors.muted('Built by vøiddo — we write tools so you do not have to. Enjoy.')}
+  ${colors.muted('Docs and issues: https://github.com/voidd0/jsonyo')}
 `);
 }
 
 function printVersion() {
   const pkg = require('../package.json');
-  console.log(`jsonyo v${pkg.version} — vøiddo, free forever. https://voiddo.com/tools/jsonyo/`);
+  console.log(pkg.version);
 }
 
 function readInput(fileArg) {
@@ -203,7 +209,7 @@ function parseArgs() {
 function output(text, outputFile) {
   if (outputFile) {
     fs.writeFileSync(outputFile, text);
-    console.log(colors.success(`✓ saved to ${outputFile}. nice.`));
+    console.log(colors.success(`✓ saved to ${outputFile}.`));
   } else {
     console.log(text);
   }
@@ -230,7 +236,7 @@ async function main() {
       case 'v': {
         const { input } = readInput(opts.files[0]);
         if (!input) {
-          console.error(colors.error('bruh. no input provided.'));
+          console.error(colors.error('no input provided.'));
           process.exit(1);
         }
         validateCmd.run(input, { schema: opts.schema });
@@ -241,7 +247,7 @@ async function main() {
       case 'f': {
         const { input } = readInput(opts.files[0]);
         if (!input) {
-          console.error(colors.error('bruh. no input provided.'));
+          console.error(colors.error('no input provided.'));
           process.exit(1);
         }
         const result = formatCmd.run(input, {
@@ -259,7 +265,7 @@ async function main() {
       case 'm': {
         const { input } = readInput(opts.files[0]);
         if (!input) {
-          console.error(colors.error('bruh. no input provided.'));
+          console.error(colors.error('no input provided.'));
           process.exit(1);
         }
         const result = minifyCmd.run(input);
@@ -271,7 +277,7 @@ async function main() {
       case 'q': {
         const { input } = readInput(opts.files[0]);
         if (!input) {
-          console.error(colors.error('bruh. no input provided.'));
+          console.error(colors.error('no input provided.'));
           process.exit(1);
         }
         const result = queryCmd.run(input, {
@@ -286,7 +292,7 @@ async function main() {
       case 'k': {
         const { input } = readInput(opts.files[0]);
         if (!input) {
-          console.error(colors.error('bruh. no input provided.'));
+          console.error(colors.error('no input provided.'));
           process.exit(1);
         }
         const result = keysCmd.run(input, { depth: opts.depth });
@@ -298,7 +304,7 @@ async function main() {
       case 't': {
         const { input } = readInput(opts.files[0]);
         if (!input) {
-          console.error(colors.error('bruh. no input provided.'));
+          console.error(colors.error('no input provided.'));
           process.exit(1);
         }
         typeCmd.run(input);
@@ -308,7 +314,7 @@ async function main() {
       case 'diff':
       case 'd': {
         if (opts.files.length < 2) {
-          console.error(colors.error('bruh. need two files to diff.'));
+          console.error(colors.error('need two files to diff.'));
           process.exit(1);
         }
         diffCmd.run(opts.files[0], opts.files[1], {
@@ -322,7 +328,7 @@ async function main() {
       case 's': {
         const { input } = readInput(opts.files[0]);
         if (!input) {
-          console.error(colors.error('bruh. no input provided.'));
+          console.error(colors.error('no input provided.'));
           process.exit(1);
         }
         statsCmd.run(input);
@@ -340,7 +346,7 @@ async function main() {
       case 'flatten': {
         const { input } = readInput(opts.files[0]);
         if (!input) {
-          console.error(colors.error('bruh. no input provided.'));
+          console.error(colors.error('no input provided.'));
           process.exit(1);
         }
         const result = flattenCmd.run(input, { separator: opts.separator });
@@ -351,7 +357,7 @@ async function main() {
       case 'unflatten': {
         const { input } = readInput(opts.files[0]);
         if (!input) {
-          console.error(colors.error('bruh. no input provided.'));
+          console.error(colors.error('no input provided.'));
           process.exit(1);
         }
         const result = unflattenCmd.run(input, { separator: opts.separator });
@@ -362,7 +368,7 @@ async function main() {
       case 'sort': {
         const { input } = readInput(opts.files[0]);
         if (!input) {
-          console.error(colors.error('bruh. no input provided.'));
+          console.error(colors.error('no input provided.'));
           process.exit(1);
         }
         const result = sortCmd.run(input, {
@@ -378,7 +384,7 @@ async function main() {
       case 'filter': {
         const { input } = readInput(opts.files[0]);
         if (!input) {
-          console.error(colors.error('bruh. no input provided.'));
+          console.error(colors.error('no input provided.'));
           process.exit(1);
         }
         const result = filterCmd.run(input, {
@@ -393,7 +399,7 @@ async function main() {
       case 'convert': {
         const { input, file } = readInput(opts.files[0]);
         if (!input) {
-          console.error(colors.error('bruh. no input provided.'));
+          console.error(colors.error('no input provided.'));
           process.exit(1);
         }
         convertCmd.run(input, {
@@ -407,12 +413,12 @@ async function main() {
 
       case 'schema': {
         if (!opts.subcommand) {
-          console.error(colors.error('bruh. use: jsonyo schema generate OR jsonyo schema validate'));
+          console.error(colors.error('use: jsonyo schema generate OR jsonyo schema validate'));
           process.exit(1);
         }
         const { input } = readInput(opts.files[0]);
         if (!input) {
-          console.error(colors.error('bruh. no input provided.'));
+          console.error(colors.error('no input provided.'));
           process.exit(1);
         }
         schemaCmd.run(opts.subcommand, input, {
@@ -425,12 +431,12 @@ async function main() {
 
       case 'generate': {
         if (!opts.subcommand) {
-          console.error(colors.error('bruh. use: jsonyo generate types|go|python|schema'));
+          console.error(colors.error('use: jsonyo generate types|go|python|schema'));
           process.exit(1);
         }
         const { input } = readInput(opts.files[0]);
         if (!input) {
-          console.error(colors.error('bruh. no input provided.'));
+          console.error(colors.error('no input provided.'));
           process.exit(1);
         }
         generateCmd.run(opts.subcommand, input, {
@@ -442,7 +448,7 @@ async function main() {
 
       case 'batch': {
         if (!opts.subcommand || opts.files.length === 0) {
-          console.error(colors.error('bruh. use: jsonyo batch <command> <pattern>'));
+          console.error(colors.error('use: jsonyo batch <command> <pattern>'));
           console.error(colors.muted('example: jsonyo batch format ./data/*.json'));
           process.exit(1);
         }
@@ -457,7 +463,7 @@ async function main() {
 
       case 'watch': {
         if (!opts.subcommand || opts.files.length === 0) {
-          console.error(colors.error('bruh. use: jsonyo watch <command> <pattern>'));
+          console.error(colors.error('use: jsonyo watch <command> <pattern>'));
           console.error(colors.muted('example: jsonyo watch format ./data/*.json'));
           process.exit(1);
         }
@@ -469,12 +475,12 @@ async function main() {
       }
 
       default:
-        console.error(colors.error(`bruh. unknown command: ${cmd}`));
+        console.error(colors.error(`unknown command: ${cmd}`));
         console.error(colors.muted('use --help to see available commands'));
         process.exit(1);
     }
   } catch (e) {
-    console.error(colors.error(`bruh. something broke: ${e.message}`));
+    console.error(colors.error(`something broke: ${e.message}`));
     console.error(colors.muted('report: https://github.com/voidd0/jsonyo/issues'));
     process.exit(1);
   }

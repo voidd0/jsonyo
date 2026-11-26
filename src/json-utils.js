@@ -1,5 +1,4 @@
 // jsonyo - JSON swiss army knife
-// https://voiddo.com/tools/jsonyo/
 
 function validate(input) {
   try {

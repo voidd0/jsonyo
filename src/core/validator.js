@@ -1,5 +1,4 @@
 // jsonyo - JSON Schema validation
-// https://voiddo.com/tools/jsonyo/
 
 const { parse } = require('./parser');
 

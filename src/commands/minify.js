@@ -1,17 +1,9 @@
 // jsonyo - minify command
-// https://voiddo.com/tools/jsonyo/
 
 const { parse, minify } = require('../core/parser');
 const { colors } = require('../utils/output');
-const { checkInputSize } = require('../license/limits');
 
 function run(input) {
-  // Check input size
-  const sizeCheck = checkInputSize(input);
-  if (!sizeCheck.allowed) {
-    process.exit(1);
-  }
-
   const result = parse(input);
 
   if (!result.success) {

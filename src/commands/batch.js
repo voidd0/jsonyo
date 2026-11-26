@@ -1,5 +1,4 @@
 // jsonyo - batch command
-// https://voiddo.com/tools/jsonyo/
 
 const fs = require('fs');
 const path = require('path');
@@ -7,14 +6,8 @@ const { parse, stringify, minify } = require('../core/parser');
 const { validateAgainstSchema } = require('../core/validator');
 const { toYAML, toTOML, toCSV, toXML } = require('../core/converter');
 const { colors, success, formatNumber } = require('../utils/output');
-const { requirePro, checkFileSize } = require('../license/limits');
 
 function run(command, pattern, options = {}) {
-  // Legacy PRO gate retained as no-op (stubs always pass).
-  if (!requirePro('batch')) {
-    process.exit(1);
-  }
-
   const { output: outputDir = null, schema = null, to = null, ignore = null } = options;
 
   // Get files matching pattern
@@ -26,7 +19,7 @@ function run(command, pattern, options = {}) {
   }
 
   if (files.length > 1000) {
-    console.log(colors.error(`bruh. too many files (${files.length}). max is 1000`));
+    console.log(colors.error(`too many files (${files.length}). max is 1000`));
     process.exit(1);
   }
 
@@ -38,14 +31,6 @@ function run(command, pattern, options = {}) {
 
   for (const file of files) {
     try {
-      // Check file size
-      const sizeCheck = checkFileSize(file);
-      if (!sizeCheck.allowed) {
-        failed++;
-        errors.push({ file, error: 'file too large' });
-        continue;
-      }
-
       const input = fs.readFileSync(file, 'utf8');
       const result = parse(input);
 
@@ -90,7 +75,7 @@ function run(command, pattern, options = {}) {
 
         case 'convert':
           if (!to) {
-            console.log(colors.error('bruh. need --to format for batch convert'));
+            console.log(colors.error('need --to format for batch convert'));
             process.exit(1);
           }
 

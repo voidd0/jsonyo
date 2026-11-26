@@ -1,132 +1,191 @@
 # jsonyo
 
-> **JSON swiss army knife. Eighteen commands. Zero limits.**
-[![npm](https://img.shields.io/npm/v/@v0idd0/jsonyo?color=%2322c55e&label=%40v0idd0%2Fjsonyo)](https://www.npmjs.com/package/@v0idd0/jsonyo)
-[![downloads](https://img.shields.io/npm/dm/@v0idd0/jsonyo?color=%2322c55e)](https://www.npmjs.com/package/@v0idd0/jsonyo)
-[![license](https://img.shields.io/npm/l/@v0idd0/jsonyo?color=%2322c55e)](./LICENSE)
-[![node](https://img.shields.io/node/v/@v0idd0/jsonyo?color=%2322c55e)](./package.json)
+A command line tool for everyday JSON work: validate, format, query, diff, merge and convert between YAML, TOML, CSV and XML. Reach for it when you want one tool for the usual JSON chores, including generating type definitions from a sample file.
 
-**[Homepage](https://tools.voiddo.com/jsonyo/?ref=jsonyo-readme)** · **[GitHub](https://github.com/voidd0/jsonyo)** · **[npm](https://www.npmjs.com/package/@v0idd0/jsonyo)** · **[All tools](https://tools.voiddo.com/?ref=jsonyo-catalog-readme)** · **[Contact](mailto:support@voiddo.com)**
-
----
-
-## Why jsonyo
-
-Every other JSON CLI gives you three commands and paywalls the rest. `jq` is powerful but hostile. Online editors leak your data. Online formatters die on anything over a megabyte.
-
-**jsonyo is one binary, eighteen commands, and no artificial limits.** No file-size caps. No daily quota. No PRO tier. No sign-up. No telemetry. No "upgrade to unlock" nag screens. You install it, you use it, it works.
-
-It exists because we got tired of paying `$9.99/mo` to format JSON that already lived on our own laptop.
+[![npm](https://img.shields.io/npm/v/@v0idd0/jsonyo?color=00f6d0&labelColor=050914)](https://www.npmjs.com/package/@v0idd0/jsonyo)
+[![test](https://github.com/voidd0/jsonyo/actions/workflows/test.yml/badge.svg)](https://github.com/voidd0/jsonyo/actions/workflows/test.yml)
+[![license](https://img.shields.io/badge/license-MIT-00f6d0?labelColor=050914)](LICENSE)
 
 ## Install
 
 ```bash
-# npm
 npm install -g @v0idd0/jsonyo
-
-# or pnpm / yarn / bun
-pnpm add -g @v0idd0/jsonyo
-yarn global add @v0idd0/jsonyo
-bun add -g @v0idd0/jsonyo
-
-# one-shot via npx (no install)
-npx @v0idd0/jsonyo format data.json
 ```
 
-Requires Node.js **≥ 14**.
+Or run it once without installing: `npx @v0idd0/jsonyo --help`. Needs Node.js 18 or newer. Depends on chalk, chokidar and glob.
 
-## The Commands
+## Example
 
-| Command | What it does |
-|---|---|
-| `validate` · `v` | Check if JSON is valid (optionally against a JSON Schema) |
-| `format` · `f` | Pretty-print with custom indent, tabs, sorted keys, fixed key order, trailing commas |
-| `minify` · `m` | Compress to a single line |
-| `query` · `q` | Extract values by JSONPath (filters, recursion, wildcards) |
-| `keys` · `k` | List every key at any depth |
-| `type` · `t` | Show inferred type and structural summary |
-| `diff` · `d` | Compare two files: text diff or RFC 6902 patch |
-| `stats` · `s` | Cardinality + shape statistics |
-| `merge` | Merge unlimited files (last-wins, deep, or custom conflict strategy) |
-| `flatten` | Flatten nested JSON with a custom separator |
-| `unflatten` | Reverse it: rebuild nesting from dotted keys |
-| `sort` | Sort keys or arrays by one or many fields |
-| `filter` | Filter array elements with expressive predicates |
-| `convert` | JSON ↔ YAML, TOML, CSV, XML: both directions |
-| `schema` | Generate a JSON Schema from data, or validate against one |
-| `generate` | Generate **TypeScript**, **Go**, **Python**, or **Rust** types from a sample |
-| `batch` | Process **thousands of files** at once with glob patterns |
-| `watch` | Watch files and auto-process on change |
+The demo file `users.json` holds three users on one line. `format` pretty prints it. Output from a real run on 2026-11-26:
+
+```console
+$ cat users.json
+{"users":[{"name":"Ada","age":36,"active":true},{"name":"Bob","age":17,"active":false},{"name":"Cy","age":42,"active":true}]}
+
+$ jsonyo format users.json
+{
+  "users": [
+    {
+      "name": "Ada",
+      "age": 36,
+      "active": true
+    },
+    {
+      "name": "Bob",
+      "age": 17,
+      "active": false
+    },
+    {
+      "name": "Cy",
+      "age": 42,
+      "active": true
+    }
+  ]
+}
+```
+
+`query` keeps the users older than 18:
+
+```console
+$ jsonyo query users.json -p '$.users[?(@.age > 18)]'
+[
+  {
+    "name": "Ada",
+    "age": 36,
+    "active": true
+  },
+  {
+    "name": "Cy",
+    "age": 42,
+    "active": true
+  }
+]
+```
+
+`convert` writes the same data as YAML:
+
+```console
+$ jsonyo convert users.json --to yaml
+users:
+  -
+    name: Ada
+    age: 36
+    active: true
+  -
+    name: Bob
+    age: 17
+    active: false
+  -
+    name: Cy
+    age: 42
+    active: true
+```
+
 
 ## Usage
 
-```bash
-# validate
-jsonyo validate data.json
-cat data.json | jsonyo v
+```text
+  jsonyo: JSON command line tool with 18 commands.
 
-# format (4 spaces, keys sorted)
-jsonyo format data.json -i 4 --sort-keys
+  Usage:
+    jsonyo <command> [options] [file]
+    cat file.json | jsonyo <command>
 
-# minify + save
-jsonyo minify huge.json -o huge.min.json
+  Commands:
+    validate, v     Check if JSON is valid
+    format, f       Pretty print JSON
+    minify, m       Minify JSON
+    query, q        Extract value by path (JSONPath, filters, recursion)
+    keys, k         List all keys at any depth
+    type, t         Show type and structural summary
+    diff, d         Compare two JSON files (text or RFC 6902 patch)
+    stats, s        Shape + cardinality statistics
+    merge           Merge two or more JSON files (overwrite or concat-arrays)
+    flatten         Flatten nested JSON with custom separators
+    unflatten       Unflatten dotted keys back to nested
+    sort            Sort keys or arrays by one or many fields
+    filter          Filter array elements with predicates
+    convert         JSON ↔ YAML / TOML / CSV / XML
+    schema          Validate against JSON Schema, or generate one
+    generate        Generate TypeScript / Go / Python / Rust types
+    batch           Run a command on many files at once (glob pattern, up to 1000 files)
+    watch           Watch files and auto-process on change
 
-# JSONPath query
-jsonyo query users.json -p "$.users[?(@.age > 18)].email"
+  Options:
+    -i, --indent    Indentation for format (default: 2)
+    -p, --path      JSONPath for query
+    --depth         Depth for keys (default: 1)
+    --by            Field to sort by (comma-separated for multi-key)
+    --where         Filter predicate
+    --to            Target format for convert (json, yaml, toml, csv, xml); csv for query
+    --from          Source format for convert (default: from file extension, else json)
+    --schema        Schema file for validation
+    --tabs          Indent format output with tabs
+    --sort-keys     Sort object keys (format)
+    --key-order     Comma-separated key order for format
+    --trailing-commas  Add trailing commas in format output
+    --select        Fields to keep in filter (comma-separated)
+    --desc          Sort descending
+    --numeric       Sort values as numbers
+    --strategy      Merge strategy: overwrite (default) or concat-arrays
+    --format        Diff output: text (default), json or patch
+    --ignore        Diff paths to ignore (comma-separated)
+    --root-name     Root type name for generate and schema
+    --separator     Separator for flatten and unflatten (default: .)
+    -o, --output    Output file
+    -h, --help      Show this help
+    --version       Show version
 
-# diff as patch
-jsonyo diff old.json new.json --format patch
+  Examples:
+    jsonyo validate data.json
+    jsonyo format data.json -i 4
+    jsonyo query data.json -p "$.users[?(@.age > 18)]"
+    jsonyo diff old.json new.json --format patch
+    jsonyo merge a.json b.json c.json -o combined.json
+    jsonyo flatten nested.json --separator /
+    jsonyo sort data.json --by "country,name"
+    jsonyo filter data.json -p users --where "age > 18 && active"
+    jsonyo convert data.json --to yaml
+    jsonyo generate types data.json -o types.ts
+    jsonyo batch format "./data/**/*.json"
 
-# merge: unlimited files, deep strategy
-jsonyo merge a.json b.json c.json d.json --strategy deep -o combined.json
-
-# flatten with custom separator
-jsonyo flatten nested.json --separator /
-
-# sort by multiple keys
-jsonyo sort data.json --by "country,name"
-
-# filter with a predicate
-jsonyo filter users.json --where "age > 18 && active"
-
-# convert to YAML / TOML / CSV / XML
-jsonyo convert data.json --to yaml
-jsonyo convert data.json --to csv -o data.csv
-
-# generate TypeScript types
-jsonyo generate types response.json -o types.ts
-
-# batch: glob across thousands of files
-jsonyo batch format "./data/**/*.json" --sort-keys
-
-# watch: auto-validate on save
-jsonyo watch validate "./src/**/*.json"
+  Docs and issues: https://github.com/voidd0/jsonyo
 ```
 
-## Pipe-friendly
+## Commands
 
-Every command reads from stdin when no file is given, so jsonyo plays well with the rest of your toolbox.
+| Command | What it does |
+|---|---|
+| `validate` | Check that the input is valid JSON, optionally against a JSON Schema |
+| `format` | Pretty print, with sorted or ordered keys if you ask |
+| `minify` | Remove all whitespace |
+| `query` | Extract values with a JSONPath expression |
+| `keys` | List keys down to a chosen depth |
+| `type` | Show the type and structure of the data |
+| `diff` | Compare two files, as text, JSON or an RFC 6902 patch |
+| `stats` | Count objects, arrays, strings, numbers and nesting depth |
+| `merge` | Merge two or more JSON files |
+| `flatten` | Turn nested JSON into flat dotted keys |
+| `unflatten` | Turn dotted keys back into nested JSON |
+| `sort` | Sort arrays by one or more fields |
+| `filter` | Keep array items that match a condition |
+| `convert` | Convert between JSON, YAML, TOML, CSV and XML |
+| `schema` | Generate a JSON Schema, or validate data against one |
+| `generate` | Generate TypeScript, Go, Python or Rust types |
+| `batch` | Run a command on all files that match a glob pattern |
+| `watch` | Re-run a command when matching files change |
 
-```bash
-curl -s https://api.example.com/data | jsonyo format -i 2
-kubectl get pods -o json | jsonyo query -p "$.items[*].metadata.name"
-aws ec2 describe-instances | jsonyo filter --where "State.Name == 'running'"
-```
+Input comes from a file argument or from stdin.
 
-## Big files, big pipelines
+## Limits
 
-- **No 10 MB cap**: if your laptop can hold it, jsonyo can chew it.
-- **No op-per-day limit**: loop it, cron it, bake it into CI.
-- **No network calls**: jsonyo is a local CLI. Your JSON never leaves your machine.
-
-## Contributing
-
-Bugs, feature ideas, PRs welcome. Open an issue at [github.com/voidd0/jsonyo/issues](https://github.com/voidd0/jsonyo/issues) or drop a line to [support@voiddo.com](mailto:support@voiddo.com).
+A path after a filter, such as `$.users[?(@.age > 18)].name`, is not applied: the matching items come back whole. `filter --where` accepts `&&` and `||` without parentheses.
 
 ## License
 
-MIT: see [LICENSE](./LICENSE).
+MIT, see [LICENSE](LICENSE).
 
 ---
 
-Maintained by v0idd0.
+Made by [vøiddo](https://voiddo.com/?src=gh). More command line tools: [voiddo.com/packages](https://voiddo.com/packages/?src=gh).
+We also run data scrapers for job boards, shops and ad libraries: [voiddo.com/scrapers](https://voiddo.com/scrapers/?src=gh).

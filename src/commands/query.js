@@ -1,23 +1,14 @@
 // jsonyo - query command
-// https://voiddo.com/tools/jsonyo/
 
 const { parse, stringify } = require('../core/parser');
 const { querySimple, queryAdvanced } = require('../core/query');
 const { colors } = require('../utils/output');
-const { checkInputSize } = require('../license/limits');
-const { isPro } = require('../license/checker');
 
 function run(input, options = {}) {
   const { path, outputFormat = 'json' } = options;
 
   if (!path) {
-    console.log(colors.error('bruh. need a path. use -p "$.your.path"'));
-    process.exit(1);
-  }
-
-  // Check input size
-  const sizeCheck = checkInputSize(input);
-  if (!sizeCheck.allowed) {
+    console.log(colors.error('need a path. use -p "$.your.path"'));
     process.exit(1);
   }
 
@@ -37,11 +28,6 @@ function run(input, options = {}) {
   let queryResult;
 
   if (isAdvancedQuery) {
-    if (!isPro()) {
-      const { showUpsell, UPSELL_TYPES } = require('../utils/upsell');
-      showUpsell(UPSELL_TYPES.PRO_FEATURE, { feature: 'query' });
-      process.exit(1);
-    }
     queryResult = queryAdvanced(result.data, path);
   } else {
     queryResult = querySimple(result.data, path);
@@ -53,7 +39,7 @@ function run(input, options = {}) {
   }
 
   // Output formatting
-  if (outputFormat === 'csv' && isPro() && Array.isArray(queryResult)) {
+  if (outputFormat === 'csv' && Array.isArray(queryResult)) {
     const { toCSV } = require('../core/converter');
     return toCSV(queryResult);
   }

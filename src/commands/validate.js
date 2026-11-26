@@ -1,21 +1,12 @@
 // jsonyo - validate command
-// https://voiddo.com/tools/jsonyo/
 
 const fs = require('fs');
 const { parseWithLocation, getErrorContext } = require('../core/parser');
 const { colors, success, jsonError } = require('../utils/output');
-const { checkInputSize, checkFileSize } = require('../license/limits');
-const { isPro } = require('../license/checker');
 const { validateAgainstSchema } = require('../core/validator');
 
 function run(input, options = {}) {
   const { schema } = options;
-
-  // Check input size
-  const sizeCheck = checkInputSize(input);
-  if (!sizeCheck.allowed) {
-    process.exit(1);
-  }
 
   // Parse JSON
   const result = parseWithLocation(input);
@@ -25,14 +16,7 @@ function run(input, options = {}) {
     process.exit(1);
   }
 
-  // Legacy PRO gate retained as no-op (stubs always pass).
   if (schema) {
-    if (!isPro()) {
-      const { showUpsell, UPSELL_TYPES } = require('../utils/upsell');
-      showUpsell(UPSELL_TYPES.PRO_FEATURE, { feature: 'schema' });
-      process.exit(1);
-    }
-
     try {
       const schemaContent = fs.readFileSync(schema, 'utf8');
       const schemaObj = JSON.parse(schemaContent);
@@ -46,13 +30,13 @@ function run(input, options = {}) {
         process.exit(1);
       }
 
-      success('valid JSON, matches schema. nice.');
+      success('valid JSON, matches schema.');
     } catch (e) {
       console.log(colors.error(`✗ error reading schema: ${e.message}`));
       process.exit(1);
     }
   } else {
-    success('valid JSON. nice.');
+    success('valid JSON.');
   }
 }
 

@@ -1,5 +1,4 @@
 // jsonyo - type generation
-// https://voiddo.com/tools/jsonyo/
 
 // Generate TypeScript interfaces from JSON
 function generateTypeScript(data, options = {}) {

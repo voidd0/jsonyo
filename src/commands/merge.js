@@ -1,31 +1,15 @@
 // jsonyo - merge command
-// https://voiddo.com/tools/jsonyo/
 
 const fs = require('fs');
 const { parse, stringify } = require('../core/parser');
 const { merge } = require('../core/transformer');
 const { colors } = require('../utils/output');
-const { checkFileSize, checkMergeLimit } = require('../license/limits');
-const { isPro } = require('../license/checker');
 
 function run(files, options = {}) {
   const { strategy = 'overwrite', output = null, onConflict = null } = options;
 
   if (files.length < 2) {
-    console.log(colors.error('bruh. need at least 2 files to merge'));
-    process.exit(1);
-  }
-
-  // Check merge limit
-  const mergeCheck = checkMergeLimit(files.length);
-  if (!mergeCheck.allowed) {
-    process.exit(1);
-  }
-
-  // Legacy PRO gate retained as no-op (stubs always pass).
-  if ((onConflict || files.length > 2) && !isPro()) {
-    const { showUpsell, UPSELL_TYPES } = require('../utils/upsell');
-    showUpsell(UPSELL_TYPES.PRO_FEATURE, { feature: 'merge' });
+    console.log(colors.error('need at least 2 files to merge'));
     process.exit(1);
   }
 
@@ -33,11 +17,6 @@ function run(files, options = {}) {
   const objects = [];
 
   for (const file of files) {
-    const sizeCheck = checkFileSize(file);
-    if (!sizeCheck.allowed) {
-      process.exit(1);
-    }
-
     const input = fs.readFileSync(file, 'utf8');
     const result = parse(input);
 

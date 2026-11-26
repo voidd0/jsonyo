@@ -1,5 +1,4 @@
 // jsonyo - format conversion
-// https://voiddo.com/tools/jsonyo/
 
 // Convert JSON to YAML
 function toYAML(data, indent = 2) {
